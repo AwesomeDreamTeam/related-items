@@ -1,34 +1,34 @@
-# Project Name
+# Related-Items
 
-> Project description
+> Related-Items is a module of the AwesomeDreamTeam Front-End Capstone project.
+> This module displays a list of products that are related to the currently viewed product.
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - https://github.com/AwesomeDreamTeam/Overview
+  - https://github.com/AwesomeDreamTeam/reviews
 
 ## Table of Contents
 
 1. [Usage](#Usage)
 1. [Requirements](#requirements)
-1. [Development](#development)
+1. [Dependencies](#dependencies)
 
 ## Usage
 
-> Some usage instructions
+```bash
+npm run start-server
+npm run react-dev
+```
 
-## Requirements
+### Requirements
 
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 - Node 6.13.0
 - etc
 
-## Development
-
-### Installing Dependencies
+#### Installing Dependencies
 
 From within the root directory:
 
