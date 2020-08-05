@@ -1,7 +1,10 @@
-# Related-Items
+# Front-End Capstone | Related Items
 
-> Related-Items is a module of the AwesomeDreamTeam Front-End Capstone project.
-> This module displays a list of products that are related to the currently viewed product.
+> Related-Items is a module of the AwesomeDreamTeam Front-End Capstone project. This module covers:
+* Related Product Cards
+* List Behavior
+* Related Products List
+* Your Outfit List
 
 ## Related Projects
 
@@ -11,11 +14,12 @@
 ## Table of Contents
 
 1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Dependencies](#dependencies)
+2. [Requirements](#requirements)
+3. [Dependencies](#dependencies)
 
 ## Usage
 
+> In two separate terminals run the following commands:
 ```bash
 npm run start-server
 npm run react-dev
