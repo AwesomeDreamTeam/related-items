@@ -1,34 +1,38 @@
-# Project Name
+# Front-End Capstone | Related Items
 
-> Project description
+> Related-Items is a module of the AwesomeDreamTeam Front-End Capstone project. This module covers:
+* Related Product Cards
+* List Behavior
+* Related Products List
+* Your Outfit List
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - https://github.com/AwesomeDreamTeam/Overview
+  - https://github.com/AwesomeDreamTeam/reviews
 
 ## Table of Contents
 
 1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+2. [Requirements](#requirements)
+3. [Dependencies](#dependencies)
 
 ## Usage
 
-> Some usage instructions
+> In two separate terminals run the following commands:
+```bash
+npm run start-server
+npm run react-dev
+```
 
-## Requirements
+### Requirements
 
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 - Node 6.13.0
 - etc
 
-## Development
-
-### Installing Dependencies
+#### Installing Dependencies
 
 From within the root directory:
 
