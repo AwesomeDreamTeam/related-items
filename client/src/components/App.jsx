@@ -1,19 +1,18 @@
 import React from 'react';
 import ProductCard from './ProductCard.jsx';
-const axios = require('axios');
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Grid } from '@material-ui/core';
-
+const axios = require('axios');
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentProduct: 1,
+      currentProduct: 8,
       relatedProductIds: null,
     };
   }
@@ -49,9 +48,7 @@ class App extends React.Component {
           <h3 style={{ textAlign: 'center' }}>RELATED PRODUCTS</h3>
           <Grid container direction="row">
             <Grid item sm={3} />
-            {/* conditionally render until relatedProductIds get from */}
             <Grid item container direction="row" spacing={3} sm={6} style={containerStyle}>
-              {/* this.state.relatedProductIds.map() */}
               {
                 relatedProductIds
                   ? relatedProductIds.map((id, key) => <ProductCard id={id} key={key} />)
