@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -22,23 +22,12 @@ class ProductCard extends React.Component {
       name: null,
       price: null,
       rating: null,
-      isLoaded: false,
+      isLoaded: null,
     };
-    this.getRating = this.getRating.bind(this);
   }
 
   componentDidMount() {
-    axios.all([this.getRating(), this.getNameAndCategory(), this.getThumbnailAndPrice()])
-      .then(axios.spread((rating, nameAndCategory, thumbnailAndPrice) => {
-        this.setState({
-          rating: rating.data.ratings,
-          name: nameAndCategory.data.name,
-          category: nameAndCategory.data.category,
-          thumbnail: thumbnailAndPrice.data.results[0].photos[0].thumbnail_url,
-          price: thumbnailAndPrice.data.results[0].original_price,
-          isLoaded: true,
-        });
-      }));
+    this.updateProducts();
   }
 
   getRating() {
@@ -51,6 +40,20 @@ class ProductCard extends React.Component {
 
   getThumbnailAndPrice() {
     return axios.get(`${this.state.url}/products/${this.state.currentId}/styles`);
+  }
+
+  updateProducts() {
+    axios.all([this.getRating(), this.getNameAndCategory(), this.getThumbnailAndPrice()])
+      .then(axios.spread((rating, nameAndCategory, thumbnailAndPrice) => {
+        this.setState({
+          rating: rating.data.ratings,
+          name: nameAndCategory.data.name,
+          category: nameAndCategory.data.category,
+          thumbnail: thumbnailAndPrice.data.results[0].photos[0].thumbnail_url,
+          price: thumbnailAndPrice.data.results[0].original_price,
+          isLoaded: true,
+        });
+      }));
   }
 
   // props.id... will be passed in and we will use that to get all other info.
@@ -67,7 +70,6 @@ class ProductCard extends React.Component {
     };
 
     const contentStyle = {
-      lineHeight: '1px',
       padding: '0',
       paddingLeft: '15px',
       height: '200px',
@@ -83,23 +85,25 @@ class ProductCard extends React.Component {
           this.state.isLoaded
             ? (
               <Card style={cardStyle} raised>
-                <CardMedia
-                  style={mediaStyle}
-                  image={this.state.thumbnail || 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101029/112815932-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'}
-                  title="something"
-                />
-                <CardContent style={contentStyle}>
-                  <Typography>{this.state.category.toUpperCase()}</Typography>
-                  <Typography>{this.state.name}</Typography>
-                  <Typography>${this.state.price}</Typography>
-                  <StarRating rating={this.state.rating} />
-                </CardContent>
+                <CardActionArea onClick={() => this.props.handleClick(this.state.currentId)}>
+                  <CardMedia
+                    style={mediaStyle}
+                    image={this.state.thumbnail || 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101029/112815932-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'}
+                    title="something"
+                  />
+                  <CardContent style={contentStyle}>
+                    <Typography>{this.state.category.toUpperCase()}</Typography>
+                    <Typography>{this.state.name}</Typography>
+                    <Typography>${this.state.price}</Typography>
+                    <StarRating rating={this.state.rating} />
+                  </CardContent>
+                </CardActionArea>
               </Card>
             )
             : <p>Waiting for card data..</p>
         }
       </Grid>
-    )
+    );
   }
 }
 
