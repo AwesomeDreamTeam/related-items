@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCard from './ProductCard.jsx';
-
+const axios = require('axios');
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -13,58 +13,53 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      product: 1,
+      currentProduct: 1,
+      relatedProductIds: null,
     };
   }
 
+  componentDidMount() {
+    axios.get(`http://52.26.193.201:3000/products/${this.state.currentProduct}/related`)
+      .then((response) => {
+        this.setState({
+          relatedProductIds: response.data,
+        });
+      })
+      .catch((err) => {
+        console.log('Err getting related products', err);
+      });
+  }
+
   render() {
-
-    // const breakStyle = {
-    //   paddingTop: '40px',
-    // };
-
     const containerStyle = {
-      border: "1px solid black",
-      flexWrap: "nowrap",
-      overflow: 'hidden'
+      padding: '20px',
+      border: '1px solid black',
+      flexWrap: 'nowrap',
+      overflow: 'hidden',
     };
 
-    const { product } = this.state;
+    const { currentProduct } = this.state;
+    const { relatedProductIds } = this.state;
 
     return (
       <div>
-        <h2>Hello, from the App component</h2>
         <span>current product:</span>
-        <span>{product}</span>
+        <span>{currentProduct}</span>
         <div>
           <h3 style={{ textAlign: 'center' }}>RELATED PRODUCTS</h3>
           <Grid container direction="row">
             <Grid item sm={3} />
-            <Grid item container sm={6} spacing={2} style={containerStyle}>
-              <Grid item xs={12} sm={3} >
-                <ProductCard />
-              </Grid>
-              <Grid item xs={12} sm={3}>
-                <ProductCard />
-              </Grid>
-              <Grid item xs={12} sm={3} >
-                <ProductCard />
-              </Grid>
-              <Grid item xs={12} sm={3} >
-                <ProductCard />
-              </Grid>
-
+            {/* conditionally render until relatedProductIds get from */}
+            <Grid item container direction="row" spacing={3} sm={6} style={containerStyle}>
+              {/* this.state.relatedProductIds.map() */}
+              {
+                relatedProductIds
+                  ? relatedProductIds.map((id, key) => <ProductCard id={id} key={key} />)
+                  : <Typography>Waiting for data...</Typography>
+              }
             </Grid>
             <Grid item sm={3} />
           </Grid>
-
-
-
-          {/* <p style={breakStyle} />
-          <Container maxWidth="lg">
-            <h2>YOUR OUTFIT</h2>
-            <Typography component="div" style={{ backgroundColor: 'black', height: '45vh' }} />
-          </Container> */}
         </div>
       </div>
     );
