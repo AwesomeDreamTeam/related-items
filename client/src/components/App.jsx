@@ -12,12 +12,19 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      currentProduct: 8,
+      currentProduct: 1,
       relatedProductIds: null,
     };
+
+    this.handleClick = this.handleClick.bind(this);
+    this.updateRelatedItems = this.updateRelatedItems.bind(this);
   }
 
   componentDidMount() {
+    this.updateRelatedItems();
+  }
+
+  updateRelatedItems() {
     axios.get(`http://52.26.193.201:3000/products/${this.state.currentProduct}/related`)
       .then((response) => {
         this.setState({
@@ -27,6 +34,15 @@ class App extends React.Component {
       .catch((err) => {
         console.log('Err getting related products', err);
       });
+  }
+
+  handleClick(id) {
+    this.setState({
+      currentProduct: id,
+      relatedProductIds: null,
+    }, () => {
+      this.updateRelatedItems();
+    });
   }
 
   render() {
@@ -51,7 +67,8 @@ class App extends React.Component {
             <Grid item container direction="row" spacing={3} sm={6} style={containerStyle}>
               {
                 relatedProductIds
-                  ? relatedProductIds.map((id, key) => <ProductCard id={id} key={key} />)
+                  ? relatedProductIds.map((id, key) =>
+                    <ProductCard id={id} key={key} handleClick={this.handleClick} />)
                   : <Typography>Waiting for data...</Typography>
               }
             </Grid>
