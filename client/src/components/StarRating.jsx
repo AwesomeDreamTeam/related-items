@@ -7,15 +7,11 @@ const StarRating = ({ rating }) => {
   const total = Object.values(rating).reduce(
     (acc, val) => acc + val, 0
   );
-
   let weightedTotal = 0;
   for (let key in rating) {
     weightedTotal += parseInt(key) * parseInt(rating[key]);
   }
-
   const avg = weightedTotal / total;
-  console.log('rating', rating);
-
   return (
     avg
       ? <Rating name="read-only" precision={0.25} value={avg} readOnly />
