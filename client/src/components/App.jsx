@@ -58,7 +58,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <h1 id="related-items"> Related Items</h1>
+        <h1 id="related-items">Related Items</h1>
         <span>current product:</span>
         <span>{currentProduct}</span>
         <div>
