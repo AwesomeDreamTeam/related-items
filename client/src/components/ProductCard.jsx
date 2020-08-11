@@ -1,13 +1,14 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Grid } from '@material-ui/core';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import StarRating from './StarRating.jsx';
+
 const axios = require('axios');
 
 class ProductCard extends React.Component {
@@ -24,6 +25,8 @@ class ProductCard extends React.Component {
       rating: null,
       isLoaded: null,
     };
+
+    this.handleCardClick = this.handleCardClick.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +59,17 @@ class ProductCard extends React.Component {
       }));
   }
 
+  handleCardClick(e) {
+    e.preventDefault();
+    //console.log('e.target', e.target);
+    if (e.target.nodeName === 'svg' || e.target.nodeName === 'path' || e.target.nodeName === 'BUTTON') {
+      console.log(`clicked icon with id ${this.state.currentId}, gonna pop up modal`);
+    } else {
+      console.log('clicked on card, e.target', e.target.nodeName);
+      this.props.handleClick(this.state.currentId);
+    }
+  }
+
   // props.id... will be passed in and we will use that to get all other info.
   render() {
     const cardStyle = {
@@ -79,18 +93,40 @@ class ProductCard extends React.Component {
       justifyContent: 'space-around',
     };
 
+    const buttonStyle = {
+      background: 'linear-gradient(0deg, rgba(168,168,168, 0) 0%, rgba(40,40,40,.8) 100%, rgba(0,212,255,1) 100%)',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    };
+
+    const iconButtonStyle = {
+      // backgroundColor: 'red',
+    };
+
+    const iconStyle = {
+      color: 'white',
+    };
+
     return (
       <Grid item>
         {
           this.state.isLoaded
             ? (
               <Card style={cardStyle} raised>
-                <CardActionArea onClick={() => this.props.handleClick(this.state.currentId)}>
+                <CardActionArea onClick={this.handleCardClick}>
                   <CardMedia
                     style={mediaStyle}
                     image={this.state.thumbnail || 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101029/112815932-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'}
-                    title="something"
-                  />
+                    title={this.state.name}
+                  >
+                    <CardContent style={buttonStyle}>
+                      <IconButton id="icon-button" aria-label="compare" style={iconButtonStyle}>
+                        <CompareArrowsIcon id="icon" fontSize="large" style={iconStyle} />
+                      </IconButton>
+                    </CardContent>
+                  </CardMedia>
+
                   <CardContent style={contentStyle}>
                     <Typography>{this.state.category.toUpperCase()}</Typography>
                     <Typography>{this.state.name}</Typography>
