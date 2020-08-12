@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -16,6 +17,7 @@ class ProductCard extends React.Component {
     super(props);
 
     this.state = {
+      productView: this.props.productView,
       currentId: this.props.id,
       url: 'http://52.26.193.201:3000',
       thumbnail: null,
@@ -31,6 +33,7 @@ class ProductCard extends React.Component {
 
   componentDidMount() {
     this.updateProducts();
+    this.currentNode();
   }
 
   getRating() {
@@ -61,16 +64,19 @@ class ProductCard extends React.Component {
 
   handleCardClick(e) {
     e.preventDefault();
-    //console.log('e.target', e.target);
     if (e.target.nodeName === 'svg' || e.target.nodeName === 'path' || e.target.nodeName === 'BUTTON') {
-      console.log(`clicked icon with id ${this.state.currentId}, gonna pop up modal`);
+      console.log(`compare ${this.state.currentId} with ${this.state.productView}`);
     } else {
       console.log('clicked on card, e.target', e.target.nodeName);
       this.props.handleClick(this.state.currentId);
     }
   }
 
-  // props.id... will be passed in and we will use that to get all other info.
+  currentNode() {
+    const node = ReactDOM.findDOMNode(this);
+    this.props.getNode(node);
+  }
+
   render() {
     const cardStyle = {
       // border: '1px solid red',
@@ -109,7 +115,7 @@ class ProductCard extends React.Component {
     };
 
     return (
-      <Grid item>
+      <Grid item id={this.state.currentId}>
         {
           this.state.isLoaded
             ? (
@@ -121,7 +127,7 @@ class ProductCard extends React.Component {
                     title={this.state.name}
                   >
                     <CardContent style={buttonStyle}>
-                      <IconButton id="icon-button" aria-label="compare" style={iconButtonStyle}>
+                      <IconButton id="icon-button" title="Compare Products" style={iconButtonStyle}>
                         <CompareArrowsIcon id="icon" fontSize="large" style={iconStyle} />
                       </IconButton>
                     </CardContent>
