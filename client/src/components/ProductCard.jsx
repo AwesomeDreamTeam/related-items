@@ -19,7 +19,6 @@ class ProductCard extends React.Component {
     this.state = {
       productView: this.props.productView,
       currentId: this.props.id,
-      url: 'http://52.26.193.201:3000',
       thumbnail: null,
       category: null,
       name: null,
@@ -28,6 +27,7 @@ class ProductCard extends React.Component {
       isLoaded: null,
     };
 
+    this.url = 'http://52.26.193.201:3000';
     this.handleCardClick = this.handleCardClick.bind(this);
   }
 
@@ -37,15 +37,15 @@ class ProductCard extends React.Component {
   }
 
   getRating() {
-    return axios.get(`${this.state.url}/reviews/${this.state.currentId}/meta`);
+    return axios.get(`${this.url}/reviews/${this.state.currentId}/meta`);
   }
 
   getNameAndCategory() {
-    return axios.get(`${this.state.url}/products/${this.state.currentId}`);
+    return axios.get(`${this.url}/products/${this.state.currentId}`);
   }
 
   getThumbnailAndPrice() {
-    return axios.get(`${this.state.url}/products/${this.state.currentId}/styles`);
+    return axios.get(`${this.url}/products/${this.state.currentId}/styles`);
   }
 
   updateProducts() {
