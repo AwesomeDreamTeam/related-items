@@ -3,10 +3,9 @@ import ProductCard from './ProductCard.jsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import { Grid } from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 const axios = require('axios');
 
 class App extends React.Component {
@@ -16,25 +15,15 @@ class App extends React.Component {
     this.state = {
       currentProduct: 1,
       relatedProductIds: null,
-      firstCard: null,
-      lastCard: null,
-      overflowRight: false,
-      overflowLeft: false,
-      lastCardEdge: null,
-      firstCardEdge: null,
-      containerRightEdge: null,
-      containerLeftEdge: null,
-      // nodes: [],
+      position: 0,
+      endOfScroll: false,
     };
 
     this.containerRef = React.createRef();
 
-    this.nodes = [];
-    this.count = 0;
-
     this.handleClick = this.handleClick.bind(this);
-    this.updateRelatedItems = this.updateRelatedItems.bind(this);
-    this.retrieveNodes = this.retrieveNodes.bind(this);
+    this.shiftLeft = this.shiftLeft.bind(this);
+    this.shiftRight = this.shiftRight.bind(this);
   }
 
   componentDidMount() {
@@ -46,11 +35,8 @@ class App extends React.Component {
       .then((response) => {
         this.setState({
           relatedProductIds: response.data,
-          firstCard: response.data[0],
-          lastCard: response.data[response.data.length - 1],
-        }, () => {
-          this.count = 0;
-          this.nodes = [];
+          position: 0,
+          endOfScroll: false,
         });
       })
       .catch((err) => {
@@ -67,35 +53,26 @@ class App extends React.Component {
     });
   }
 
-  isOverflown() {
-    let last = this.nodes[this.nodes.length - 1];
-    let lastRect = last.getBoundingClientRect();
-    let contRect = this.containerRef.current.getBoundingClientRect();
+  shiftLeft() {
+    this.containerRef.current.scrollLeft += 335;
+    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft)
+      === this.containerRef.current.clientWidth - 1;
 
     this.setState({
-      lastCardEdge: lastRect.right,
-      containerRightEdge: this.containerRef.current.clientWidth,
-      containerLeftEdge: contRect.left,
+      position: this.containerRef.current.scrollLeft,
+      endOfScroll: tempBool,
     });
-
-
-    // console.log('this.containerRef.current.clientWidth', this.containerRef.current.clientWidth);
-    // //el.scrollWidth > el.clientWidth ?
-    // console.log('this.containerRef.current.scrollWidth', this.containerRef.current.scrollWidth);
-    console.log(`first card: ${this.state.firstCard}, last card ${this.state.lastCard}`);
-
-    // this.nodes.forEach((node) => console.log('node.id'));
   }
 
-  retrieveNodes(node) {
-    // let joined = this.state.nodes.concat(node);
-    this.count++;
-    console.log(`adding node ${node}`);
-    this.nodes.push(node);
+  shiftRight() {
+    this.containerRef.current.scrollLeft -= 335;
+    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft)
+      === this.containerRef.current.clientWidth - 1;
 
-    if (this.state.relatedProductIds.length === this.count) {
-      this.isOverflown();
-    }
+    this.setState({
+      position: this.containerRef.current.scrollLeft,
+      endOfScroll: tempBool,
+    });
   }
 
   render() {
@@ -103,7 +80,7 @@ class App extends React.Component {
       padding: '20px',
       // border: '1px solid black',
       flexWrap: 'nowrap',
-      overflow: 'auto',
+      overflow: 'hidden',
     };
 
     const leftGridStyle = {
@@ -123,27 +100,25 @@ class App extends React.Component {
     };
 
     const rightGridStyle = {
-      backgroundColor: 'rgba(255, 255,255,0)',
+      // backgroundColor: 'rgba(255, 255,255,0)',
       // border: '1px solid red',
       textAlign: 'left',
       position: 'relative',
-      // background: 'rgba(255, 255, 255, 1)',
       zIndex: '1',
     };
 
     const rightArrowStyle = {
-      marginLeft: '-52',
+      marginLeft: '-104',
+      left: '50px',
       // border: '1px solid red',
       position: 'absolute',
       height: '100%',
       width: '70px',
-      background: 'linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.5), rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,1))',
+      background: 'linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1))',
     };
 
     const { currentProduct } = this.state;
     const { relatedProductIds } = this.state;
-
-    console.log('last card edge', this.state.lastCardEdge);
 
     return (
       <div>
@@ -153,20 +128,27 @@ class App extends React.Component {
         <div>
           <h3 style={{ textAlign: 'center' }}>RELATED PRODUCTS</h3>
           <Grid container direction="row">
-            <Grid item sm={2} lg={3} style={leftGridStyle}>
-              <ArrowBackIosIcon fontSize="small" style={leftArrowStyle} />
+            <Grid item sm={3} style={leftGridStyle}>
+              {
+                this.state.position > 0
+                  ? <NavigateBeforeIcon fontSize="small" style={leftArrowStyle} onClick={this.shiftRight} />
+                  : null
+              }
             </Grid>
-            <Grid ref={this.containerRef} item container direction="row" spacing={4} sm={8} lg={6} style={containerStyle}>
-
+            <Grid ref={this.containerRef} item container direction="row" spacing={4} sm={6} style={containerStyle}>
               {
                 relatedProductIds
-                  ? relatedProductIds.map((id, key) =>
-                    <ProductCard id={id} key={key} productView={this.state.currentProduct} handleClick={this.handleClick} getNode={this.retrieveNodes} />)
+                  // eslint-disable-next-line max-len
+                  ? relatedProductIds.map((id, key) => <ProductCard id={id} key={key} productView={this.state.currentProduct} handleClick={this.handleClick} />)
                   : <Typography>Waiting for data...</Typography>
               }
             </Grid>
-            <Grid item sm={2} lg={3} style={rightGridStyle}>
-              <ArrowForwardIosIcon fontSize="small" style={rightArrowStyle} />
+            <Grid item sm={3} style={rightGridStyle}>
+              {
+                !this.state.endOfScroll
+                  ? <NavigateNextIcon fontSize="small" style={rightArrowStyle} onClick={this.shiftLeft} />
+                  : null
+              }
             </Grid>
           </Grid>
         </div>
