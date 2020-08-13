@@ -33,7 +33,7 @@ class ProductCard extends React.Component {
 
   componentDidMount() {
     this.updateProducts();
-    this.currentNode();
+    //this.currentNode();
   }
 
   getRating() {
@@ -70,11 +70,6 @@ class ProductCard extends React.Component {
       console.log('clicked on card, e.target', e.target.nodeName);
       this.props.handleClick(this.state.currentId);
     }
-  }
-
-  currentNode() {
-    const node = ReactDOM.findDOMNode(this);
-    this.props.getNode(node);
   }
 
   render() {
