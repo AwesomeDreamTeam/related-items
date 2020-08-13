@@ -24,6 +24,7 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.shiftLeft = this.shiftLeft.bind(this);
     this.shiftRight = this.shiftRight.bind(this);
+    this.updatePosition = this.updatePosition.bind(this);
   }
 
   componentDidMount() {
@@ -54,23 +55,48 @@ class App extends React.Component {
   }
 
   shiftLeft() {
-    this.containerRef.current.scrollLeft += 335;
-    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft)
-      === this.containerRef.current.clientWidth - 1;
+    let scrollAmount = 335;
+    const container = this.containerRef.current;
+    const updatePosition = this.updatePosition;
 
-    this.setState({
-      position: this.containerRef.current.scrollLeft,
-      endOfScroll: tempBool,
-    });
+    async function scroller() {
+      const slideTimer = setInterval(() => {
+        container.scrollLeft += 33.5;
+
+        updatePosition(container.scrollLeft);
+        scrollAmount -= 33.5;
+        if (scrollAmount <= 0) {
+          window.clearInterval(slideTimer);
+        }
+      }, 20);
+    }
+    scroller().then();
   }
 
   shiftRight() {
-    this.containerRef.current.scrollLeft -= 335;
-    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft)
-      === this.containerRef.current.clientWidth - 1;
+    let scrollAmount = 335;
+    const container = this.containerRef.current;
+    const updatePosition = this.updatePosition;
+
+    async function scroller() {
+      const sliderTimer = setInterval(() => {
+        container.scrollLeft -= 33.5;
+
+        updatePosition(container.scrollLeft);
+        scrollAmount -= 33.5;
+        if (scrollAmount <= 0) {
+          window.clearInterval(sliderTimer);
+        }
+      }, 20);
+    }
+    scroller().then();
+  }
+
+  updatePosition(scrollPosition) {
+    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft) === this.containerRef.current.clientWidth - 1;
 
     this.setState({
-      position: this.containerRef.current.scrollLeft,
+      position: scrollPosition,
       endOfScroll: tempBool,
     });
   }
