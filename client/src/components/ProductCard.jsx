@@ -1,13 +1,15 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Grid } from '@material-ui/core';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import StarRating from './StarRating.jsx';
+
 const axios = require('axios');
 
 class ProductCard extends React.Component {
@@ -15,8 +17,8 @@ class ProductCard extends React.Component {
     super(props);
 
     this.state = {
+      productView: this.props.productView,
       currentId: this.props.id,
-      url: 'http://52.26.193.201:3000',
       thumbnail: null,
       category: null,
       name: null,
@@ -24,22 +26,26 @@ class ProductCard extends React.Component {
       rating: null,
       isLoaded: null,
     };
+
+    this.url = 'http://52.26.193.201:3000';
+    this.handleCardClick = this.handleCardClick.bind(this);
   }
 
   componentDidMount() {
     this.updateProducts();
+    //this.currentNode();
   }
 
   getRating() {
-    return axios.get(`${this.state.url}/reviews/${this.state.currentId}/meta`);
+    return axios.get(`${this.url}/reviews/${this.state.currentId}/meta`);
   }
 
   getNameAndCategory() {
-    return axios.get(`${this.state.url}/products/${this.state.currentId}`);
+    return axios.get(`${this.url}/products/${this.state.currentId}`);
   }
 
   getThumbnailAndPrice() {
-    return axios.get(`${this.state.url}/products/${this.state.currentId}/styles`);
+    return axios.get(`${this.url}/products/${this.state.currentId}/styles`);
   }
 
   updateProducts() {
@@ -56,7 +62,16 @@ class ProductCard extends React.Component {
       }));
   }
 
-  // props.id... will be passed in and we will use that to get all other info.
+  handleCardClick(e) {
+    e.preventDefault();
+    if (e.target.nodeName === 'svg' || e.target.nodeName === 'path' || e.target.nodeName === 'BUTTON') {
+      console.log(`compare ${this.state.currentId} with ${this.state.productView}`);
+    } else {
+      console.log('clicked on card, e.target', e.target.nodeName);
+      this.props.handleClick(this.state.currentId);
+    }
+  }
+
   render() {
     const cardStyle = {
       // border: '1px solid red',
@@ -79,18 +94,40 @@ class ProductCard extends React.Component {
       justifyContent: 'space-around',
     };
 
+    const buttonStyle = {
+      background: 'linear-gradient(0deg, rgba(168,168,168, 0) 0%, rgba(40,40,40,.8) 100%, rgba(0,212,255,1) 100%)',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    };
+
+    const iconButtonStyle = {
+      // backgroundColor: 'red',
+    };
+
+    const iconStyle = {
+      color: 'white',
+    };
+
     return (
-      <Grid item>
+      <Grid item id={this.state.currentId}>
         {
           this.state.isLoaded
             ? (
               <Card style={cardStyle} raised>
-                <CardActionArea onClick={() => this.props.handleClick(this.state.currentId)}>
+                <CardActionArea onClick={this.handleCardClick}>
                   <CardMedia
                     style={mediaStyle}
                     image={this.state.thumbnail || 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101029/112815932-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'}
-                    title="something"
-                  />
+                    title={this.state.name}
+                  >
+                    <CardContent style={buttonStyle}>
+                      <IconButton id="icon-button" title="Compare Products" style={iconButtonStyle}>
+                        <CompareArrowsIcon id="icon" fontSize="large" style={iconStyle} />
+                      </IconButton>
+                    </CardContent>
+                  </CardMedia>
+
                   <CardContent style={contentStyle}>
                     <Typography>{this.state.category.toUpperCase()}</Typography>
                     <Typography>{this.state.name}</Typography>
