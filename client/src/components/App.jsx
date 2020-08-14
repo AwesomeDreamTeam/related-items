@@ -1,11 +1,10 @@
 import React from 'react';
 import ProductCard from './ProductCard.jsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+
 const axios = require('axios');
 
 class App extends React.Component {
@@ -59,18 +58,15 @@ class App extends React.Component {
     const container = this.containerRef.current;
     const updatePosition = this.updatePosition;
 
-    async function scroller() {
-      const slideTimer = setInterval(() => {
-        container.scrollLeft += 33.5;
+    const slideTimer = setInterval(() => {
+      container.scrollLeft += 33.5;
 
-        updatePosition(container.scrollLeft);
-        scrollAmount -= 33.5;
-        if (scrollAmount <= 0) {
-          window.clearInterval(slideTimer);
-        }
-      }, 20);
-    }
-    scroller().then();
+      updatePosition(container.scrollLeft);
+      scrollAmount -= 33.5;
+      if (scrollAmount <= 0) {
+        window.clearInterval(slideTimer);
+      }
+    }, 20);
   }
 
   shiftRight() {
@@ -78,18 +74,15 @@ class App extends React.Component {
     const container = this.containerRef.current;
     const updatePosition = this.updatePosition;
 
-    async function scroller() {
-      const sliderTimer = setInterval(() => {
-        container.scrollLeft -= 33.5;
+    const sliderTimer = setInterval(() => {
+      container.scrollLeft -= 33.5;
 
-        updatePosition(container.scrollLeft);
-        scrollAmount -= 33.5;
-        if (scrollAmount <= 0) {
-          window.clearInterval(sliderTimer);
-        }
-      }, 20);
-    }
-    scroller().then();
+      updatePosition(container.scrollLeft);
+      scrollAmount -= 33.5;
+      if (scrollAmount <= 0) {
+        window.clearInterval(sliderTimer);
+      }
+    }, 20);
   }
 
   updatePosition(scrollPosition) {
@@ -107,6 +100,7 @@ class App extends React.Component {
       // border: '1px solid black',
       flexWrap: 'nowrap',
       overflow: 'hidden',
+      // backgroundColor: '#f8f8ff',
     };
 
     const leftGridStyle = {
@@ -119,6 +113,7 @@ class App extends React.Component {
 
     const leftArrowStyle = {
       // border: '1px solid red',
+      cursor: 'pointer',
       position: 'absolute',
       height: '100%',
       width: '70px',
@@ -126,7 +121,6 @@ class App extends React.Component {
     };
 
     const rightGridStyle = {
-      // backgroundColor: 'rgba(255, 255,255,0)',
       // border: '1px solid red',
       textAlign: 'left',
       position: 'relative',
@@ -134,6 +128,7 @@ class App extends React.Component {
     };
 
     const rightArrowStyle = {
+      cursor: 'pointer',
       marginLeft: '-104',
       left: '50px',
       // border: '1px solid red',
