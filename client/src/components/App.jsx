@@ -54,15 +54,15 @@ class App extends React.Component {
   }
 
   shiftLeft() {
-    let scrollAmount = 335;
+    let scrollAmount = 340;
     const container = this.containerRef.current;
     const updatePosition = this.updatePosition;
 
     const slideTimer = setInterval(() => {
-      container.scrollLeft += 33.5;
+      container.scrollLeft += 34;
 
       updatePosition(container.scrollLeft);
-      scrollAmount -= 33.5;
+      scrollAmount -= 34;
       if (scrollAmount <= 0) {
         window.clearInterval(slideTimer);
       }
@@ -70,15 +70,15 @@ class App extends React.Component {
   }
 
   shiftRight() {
-    let scrollAmount = 335;
+    let scrollAmount = 340;
     const container = this.containerRef.current;
     const updatePosition = this.updatePosition;
 
     const sliderTimer = setInterval(() => {
-      container.scrollLeft -= 33.5;
+      container.scrollLeft -= 34;
 
       updatePosition(container.scrollLeft);
-      scrollAmount -= 33.5;
+      scrollAmount -= 34;
       if (scrollAmount <= 0) {
         window.clearInterval(sliderTimer);
       }
