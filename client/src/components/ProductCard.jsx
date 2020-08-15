@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Grid } from '@material-ui/core';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import CompareModal from './CompareModal.jsx';
+
+
 import StarRating from './StarRating.jsx';
 
 const axios = require('axios');
@@ -101,14 +102,6 @@ class ProductCard extends React.Component {
       justifyContent: 'flex-end',
     };
 
-    const iconButtonStyle = {
-      // backgroundColor: 'red',
-    };
-
-    const iconStyle = {
-      color: 'white',
-    };
-
     return (
       <Grid item id={this.state.currentId}>
         {
@@ -122,14 +115,12 @@ class ProductCard extends React.Component {
                     title={this.state.name}
                   >
                     <CardContent style={buttonStyle}>
-                      <IconButton id="icon-button" title="Compare Products" style={iconButtonStyle}>
-                        <CompareArrowsIcon id="icon" fontSize="large" style={iconStyle} />
-                      </IconButton>
+                      <CompareModal productOne={this.state.productView} productTwo={this.state.currentId} />
                     </CardContent>
                   </CardMedia>
 
                   <CardContent style={contentStyle}>
-                    <Typography>{this.state.category.toUpperCase()}</Typography>
+                    <Typography>{this.state.category.toUpperCase()} </Typography>
                     <Typography>{this.state.name}</Typography>
                     <Typography>${this.state.price}</Typography>
                     <StarRating rating={this.state.rating} />
