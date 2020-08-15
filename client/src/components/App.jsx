@@ -86,7 +86,10 @@ class App extends React.Component {
   }
 
   updatePosition(scrollPosition) {
-    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft) === this.containerRef.current.clientWidth - 1;
+    const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft)
+      === this.containerRef.current.clientWidth - 1
+      ||
+      this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft) === this.containerRef.current.clientWidth;
 
     this.setState({
       position: scrollPosition,
@@ -149,14 +152,14 @@ class App extends React.Component {
         <div>
           <h3 style={{ textAlign: 'center' }}>RELATED PRODUCTS</h3>
           <Grid container direction="row">
-            <Grid item sm={3} style={leftGridStyle}>
+            <Grid item sm={2} lg={3} style={leftGridStyle}>
               {
                 this.state.position > 0
                   ? <NavigateBeforeIcon fontSize="small" style={leftArrowStyle} onClick={this.shiftRight} />
                   : null
               }
             </Grid>
-            <Grid ref={this.containerRef} item container direction="row" spacing={4} sm={6} style={containerStyle}>
+            <Grid ref={this.containerRef} item container direction="row" spacing={4} sm={8} lg={6} style={containerStyle}>
               {
                 relatedProductIds
                   // eslint-disable-next-line max-len
@@ -164,7 +167,7 @@ class App extends React.Component {
                   : <Typography>Waiting for data...</Typography>
               }
             </Grid>
-            <Grid item sm={3} style={rightGridStyle}>
+            <Grid item sm={2} lg={3} style={rightGridStyle}>
               {
                 !this.state.endOfScroll
                   ? <NavigateNextIcon fontSize="small" style={rightArrowStyle} onClick={this.shiftLeft} />
