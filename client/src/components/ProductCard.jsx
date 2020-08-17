@@ -103,6 +103,19 @@ class ProductCard extends React.Component {
       justifyContent: 'flex-end',
     };
 
+    const categoryStyle = {
+      fontWeight: 'lighter',
+    };
+
+    const nameStyle = {
+      fontWeight: 'bold',
+      fontSize: '20px',
+    };
+
+    const priceStyle = {
+      fontWeight: 'lighter',
+    };
+
     return (
       <Grid item id={this.state.currentId}>
         {
@@ -122,9 +135,9 @@ class ProductCard extends React.Component {
                 <CardActionArea onClick={this.handleCardClick}>
 
                   <CardContent style={contentStyle}>
-                    <Typography>{this.state.category.toUpperCase()} </Typography>
-                    <Typography>{this.state.name}</Typography>
-                    <Typography>${this.state.price}</Typography>
+                    <Typography style={categoryStyle}>{this.state.category.toUpperCase()} </Typography>
+                    <Typography style={nameStyle}>{this.state.name}</Typography>
+                    <Typography style={priceStyle}>${this.state.price}</Typography>
                     <StarRating rating={this.state.rating} />
                   </CardContent>
                 </CardActionArea>
