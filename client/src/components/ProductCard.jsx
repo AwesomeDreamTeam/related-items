@@ -19,12 +19,14 @@ class ProductCard extends React.Component {
 
     this.state = {
       productView: this.props.productView,
+      productViewInfo: null,
       currentId: this.props.id,
       thumbnail: null,
       category: null,
       name: null,
       price: null,
       rating: null,
+      features: null,
       isLoaded: null,
     };
 
@@ -34,7 +36,10 @@ class ProductCard extends React.Component {
 
   componentDidMount() {
     this.updateProducts();
-    //this.currentNode();
+  }
+
+  getProductView() {
+    return axios.get(`${this.url}/products/${this.state.productView}`);
   }
 
   getRating() {
@@ -50,11 +55,13 @@ class ProductCard extends React.Component {
   }
 
   updateProducts() {
-    axios.all([this.getRating(), this.getNameAndCategory(), this.getThumbnailAndPrice()])
-      .then(axios.spread((rating, nameAndCategory, thumbnailAndPrice) => {
+    axios.all([this.getProductView(), this.getRating(), this.getNameAndCategory(), this.getThumbnailAndPrice()])
+      .then(axios.spread((productView, rating, nameAndCategory, thumbnailAndPrice) => {
         this.setState({
+          productViewInfo: productView.data,
           rating: rating.data.ratings,
           name: nameAndCategory.data.name,
+          features: nameAndCategory.data.features,
           category: nameAndCategory.data.category,
           thumbnail: thumbnailAndPrice.data.results[0].photos[0].thumbnail_url,
           price: thumbnailAndPrice.data.results[0].original_price,
@@ -65,17 +72,11 @@ class ProductCard extends React.Component {
 
   handleCardClick(e) {
     e.preventDefault();
-    if (e.target.nodeName === 'svg' || e.target.nodeName === 'path' || e.target.nodeName === 'BUTTON') {
-      console.log(`compare ${this.state.currentId} with ${this.state.productView}`);
-    } else {
-      console.log('clicked on card, e.target', e.target.nodeName);
-      this.props.handleClick(this.state.currentId);
-    }
+    this.props.handleClick(this.state.currentId);
   }
 
   render() {
     const cardStyle = {
-      // border: '1px solid red',
       height: '500px',
       width: '315px',
     };
@@ -108,16 +109,17 @@ class ProductCard extends React.Component {
           this.state.isLoaded
             ? (
               <Card style={cardStyle} raised>
+
+                <CardMedia
+                  style={mediaStyle}
+                  image={this.state.thumbnail || 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101029/112815932-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'}
+                  title={this.state.name}
+                >
+                  <CardContent style={buttonStyle}>
+                    <CompareModal comparedProductName={this.state.name} comparedProductCategory={this.state.category} currentProductInfo={this.state.productViewInfo} comparedProductFeatures={this.state.features} />
+                  </CardContent>
+                </CardMedia>
                 <CardActionArea onClick={this.handleCardClick}>
-                  <CardMedia
-                    style={mediaStyle}
-                    image={this.state.thumbnail || 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101029/112815932-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'}
-                    title={this.state.name}
-                  >
-                    <CardContent style={buttonStyle}>
-                      <CompareModal productOne={this.state.productView} productTwo={this.state.currentId} />
-                    </CardContent>
-                  </CardMedia>
 
                   <CardContent style={contentStyle}>
                     <Typography>{this.state.category.toUpperCase()} </Typography>
