@@ -87,9 +87,7 @@ class App extends React.Component {
 
   updatePosition(scrollPosition) {
     const tempBool = this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft)
-      === this.containerRef.current.clientWidth - 1
-      ||
-      this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft) === this.containerRef.current.clientWidth;
+      === this.containerRef.current.clientWidth - 1 || this.containerRef.current.scrollWidth - Math.ceil(this.containerRef.current.scrollLeft) === this.containerRef.current.clientWidth;
 
     this.setState({
       position: scrollPosition,
