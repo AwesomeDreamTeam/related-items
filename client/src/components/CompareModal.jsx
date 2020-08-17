@@ -1,12 +1,37 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
+
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles({
+  title: {
+    padding: '5px',
+  },
+  tableContainer: {
+    minHeight: 250,
+    width: 500,
+  },
+  tableHeader: {
+    top: 0,
+    // border: '1px solid red',
+  },
+  headerText: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+  },
+});
 
 const CompareModal = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -14,11 +39,8 @@ const CompareModal = (props) => {
 
   const handleClickOpen = (scrollType) => (e) => {
     e.preventDefault();
-    if (e.target.nodeName === 'svg' || e.target.nodeName === 'path' || e.target.nodeName === 'BUTTON') {
-      // console.log(`compare ${this.state.currentId} with ${this.state.productView}`);
-      setOpen(true);
-      setScroll(scrollType);
-    }
+    setOpen(true);
+    setScroll(scrollType);
   };
 
   const handleClose = () => {
@@ -35,6 +57,10 @@ const CompareModal = (props) => {
     }
   }, [open]);
 
+  const classes = useStyles(props);
+
+
+  console.log('props.currentProductInfo', props.currentProductInfo);
   return (
     <div>
       <IconButton id="icon-button" title="Compare Products" onClick={handleClickOpen('paper')}>
@@ -46,8 +72,25 @@ const CompareModal = (props) => {
         onClose={handleClose}
         scroll={scroll}
       >
-        <DialogTitle>Modal!!!!</DialogTitle>
-
+        <DialogTitle className={classes.title}>
+          <Typography className={classes.comparing}>COMPARING</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <TableContainer className={classes.tableContainer}>
+            <Table>
+              <TableHead className={classes.tableHeader}>
+                <TableRow>
+                  <TableCell align="left" className={classes.headerText}>
+                    {props.currentProductInfo.name}
+                  </TableCell>
+                  <TableCell align="right" className={classes.headerText}>
+                    {props.comparedProductName}
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
+        </DialogContent>
       </Dialog>
     </div>
   );
