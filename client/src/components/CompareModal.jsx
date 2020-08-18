@@ -40,6 +40,9 @@ const useStyles = makeStyles({
     fontSize: '20px',
     fontWeight: 'bold',
   },
+  check: {
+    color: 'green',
+  },
 });
 
 const CompareModal = (props) => {
@@ -140,7 +143,7 @@ const CompareModal = (props) => {
                       <TableCell align="left">
                         {
                           row.bool1
-                            ? <CheckIcon />
+                            ? <CheckIcon className={classes.check} />
                             : null
                         }
                       </TableCell>
@@ -148,7 +151,7 @@ const CompareModal = (props) => {
                       <TableCell align="right">
                         {
                           row.bool2
-                            ? <CheckIcon />
+                            ? <CheckIcon className={classes.check} />
                             : null
                         }
                       </TableCell>
