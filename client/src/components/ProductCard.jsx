@@ -109,7 +109,7 @@ class ProductCard extends React.Component {
 
     const nameStyle = {
       fontWeight: 'bold',
-      fontSize: '20px',
+      fontSize: '22px',
     };
 
     const priceStyle = {
