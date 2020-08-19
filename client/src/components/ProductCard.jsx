@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Grid } from '@material-ui/core';
 import CompareModal from './CompareModal.jsx';
-
 
 import StarRating from './StarRating.jsx';
 
@@ -133,7 +131,8 @@ class ProductCard extends React.Component {
                       comparedProductName={this.state.name}
                       comparedProductCategory={this.state.category}
                       currentProductInfo={this.state.productViewInfo}
-                      comparedProductFeatures={this.state.features} />
+                      comparedProductFeatures={this.state.features}
+                    />
                   </CardContent>
                 </CardMedia>
                 <CardActionArea onClick={this.handleCardClick}>
