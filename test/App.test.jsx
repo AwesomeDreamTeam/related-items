@@ -49,15 +49,9 @@ describe('Test of App component', () => {
 
   //  expect(wrapper.find(ProductCard).length).toBe(4);
   it('should update current id when card is clicked', () => {
-
+    wrapper = mount(<App />);
+    const appInstance = wrapper.instance();
+    appInstance.handleClick(3);
+    expect(wrapper.state('currentProduct')).toBe(3);
   });
-  // handleClick(id) {
-  //   this.setState({
-  //     currentProduct: id,
-  //     relatedProductIds: null,
-  //   }, () => {
-  //     this.updateRelatedItems();
-  //   });
-  // }
-
 });
