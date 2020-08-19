@@ -108,17 +108,18 @@ class App extends React.Component {
       // border: '1px solid red',
       textAlign: 'right',
       position: 'relative',
-      background: 'rgba(255, 255, 255, 1)',
+      // background: 'rgba(255, 255, 255, 1)',
       zIndex: '1',
     };
 
     const leftArrowStyle = {
       // border: '1px solid red',
+      marginLeft: '-50',
       cursor: 'pointer',
       position: 'absolute',
       height: '100%',
       width: '70px',
-      background: 'linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,.5), rgba(255,255,255,0))',
+      background: 'linear-gradient(90deg, rgba(48,48,48,1), rgba(48,48,48,1), rgba(48,48,48,1), rgba(48,48,48,.5), rgba(48,48,48,0))',
     };
 
     const rightGridStyle = {
@@ -136,7 +137,13 @@ class App extends React.Component {
       position: 'absolute',
       height: '100%',
       width: '70px',
-      background: 'linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1))',
+      background: 'linear-gradient(90deg, rgba(48,48,48,0), rgba(48,48,48,.5), rgba(48,48,48,1), rgba(48,48,48,1), rgba(48,48,48,1))',
+    };
+
+    const headerStyle = {
+      textAlign: 'center',
+      fontSize: '24px',
+      fontWeight: 'lighter',
     };
 
     const { currentProduct } = this.state;
@@ -148,7 +155,7 @@ class App extends React.Component {
         <span>current product:</span>
         <span>{currentProduct}</span>
         <div>
-          <h3 style={{ textAlign: 'center' }}>RELATED PRODUCTS</h3>
+          <h3 style={headerStyle}>RELATED PRODUCTS</h3>
           <Grid container direction="row">
             <Grid item sm={2} lg={3} style={leftGridStyle}>
               {
