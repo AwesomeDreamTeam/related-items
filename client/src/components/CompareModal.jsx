@@ -41,7 +41,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
   },
   check: {
-    color: 'green',
+    color: '#1e88e5',
   },
 });
 
