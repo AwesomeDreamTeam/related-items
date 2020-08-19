@@ -129,15 +129,25 @@ class ProductCard extends React.Component {
                   title={this.state.name}
                 >
                   <CardContent style={buttonStyle}>
-                    <CompareModal comparedProductName={this.state.name} comparedProductCategory={this.state.category} currentProductInfo={this.state.productViewInfo} comparedProductFeatures={this.state.features} />
+                    <CompareModal
+                      comparedProductName={this.state.name}
+                      comparedProductCategory={this.state.category}
+                      currentProductInfo={this.state.productViewInfo}
+                      comparedProductFeatures={this.state.features} />
                   </CardContent>
                 </CardMedia>
                 <CardActionArea onClick={this.handleCardClick}>
 
                   <CardContent style={contentStyle}>
-                    <Typography style={categoryStyle}>{this.state.category.toUpperCase()} </Typography>
-                    <Typography style={nameStyle}>{this.state.name}</Typography>
-                    <Typography style={priceStyle}>${this.state.price}</Typography>
+                    <Typography style={categoryStyle}>
+                      {this.state.category.toUpperCase()}
+                    </Typography>
+                    <Typography style={nameStyle}>
+                      {this.state.name}
+                    </Typography>
+                    <Typography style={priceStyle}>
+                      ${this.state.price}
+                    </Typography>
                     <StarRating rating={this.state.rating} />
                   </CardContent>
                 </CardActionArea>
