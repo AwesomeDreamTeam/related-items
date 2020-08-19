@@ -2,7 +2,6 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
-
 const StarRating = ({ rating }) => {
   const total = Object.values(rating).reduce(
     (acc, val) => acc + val, 0
