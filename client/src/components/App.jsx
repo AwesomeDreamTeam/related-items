@@ -1,9 +1,10 @@
 import React from 'react';
-import ProductCard from './ProductCard.jsx';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import AddItemCard from './AddItemCard.jsx';
+import ProductCard from './ProductCard.jsx';
 
 const axios = require('axios');
 
@@ -14,8 +15,10 @@ class App extends React.Component {
     this.state = {
       currentProduct: 1,
       relatedProductIds: null,
+      currentProductName: null,
       position: 0,
       endOfScroll: false,
+      outfitList: [],
     };
 
     this.containerRef = React.createRef();
@@ -24,10 +27,24 @@ class App extends React.Component {
     this.shiftLeft = this.shiftLeft.bind(this);
     this.shiftRight = this.shiftRight.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
+    this.handleClickAddItem = this.handleClickAddItem.bind(this);
   }
 
   componentDidMount() {
     this.updateRelatedItems();
+    this.getCurrentProductName();
+  }
+
+  getCurrentProductName() {
+    axios.get(`http://52.26.193.201:3000/products/${this.state.currentProduct}`)
+      .then((response) => {
+        this.setState({
+          currentProductName: response.data.name,
+        });
+      })
+      .catch((err) => {
+        console.log('Err could not get product name', err);
+      });
   }
 
   updateRelatedItems() {
@@ -50,6 +67,7 @@ class App extends React.Component {
       relatedProductIds: null,
     }, () => {
       this.updateRelatedItems();
+      this.getCurrentProductName();
     });
   }
 
@@ -93,6 +111,10 @@ class App extends React.Component {
       position: scrollPosition,
       endOfScroll: tempBool,
     });
+  }
+
+  handleClickAddItem(e) {
+    console.log(`clicked ${this.state.currentProductName}`);
   }
 
   render() {
@@ -172,6 +194,30 @@ class App extends React.Component {
                   : null
               }
             </Grid>
+          </Grid>
+        </div>
+        <div style={{ paddingTop: '30px', paddingBottom: '25px' }}>
+          <h3 style={headerStyle}>MY OUTFIT</h3>
+          <Grid container diretion="row">
+            <Grid item sm={2} lg={3} />
+            <Grid item container direction="row" spacing={4} sm={8} lg={6} style={containerStyle}>
+              {
+                this.state.currentProductName
+                  ? (
+                    <AddItemCard
+                      itemName={this.state.currentProductName}
+                      handleAddItem={this.handleClickAddItem}
+                    />
+                  )
+                  : null
+              }
+              {
+                this.state.outfitList
+                  ? <h2>Items in outfitList</h2>
+                  : null
+              }
+            </Grid>
+            <Grid item sm={2} lg={3} />
           </Grid>
         </div>
       </div>
