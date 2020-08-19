@@ -56,7 +56,7 @@ class App extends React.Component {
   shiftLeft() {
     let scrollAmount = 340;
     const container = this.containerRef.current;
-    const updatePosition = this.updatePosition;
+    const { updatePosition } = this;
 
     const slideTimer = setInterval(() => {
       container.scrollLeft += 34;
@@ -97,23 +97,18 @@ class App extends React.Component {
 
   render() {
     const containerStyle = {
-      padding: '20px',
-      // border: '1px solid black',
+      // padding: '20px',
       flexWrap: 'nowrap',
       overflow: 'hidden',
-      // backgroundColor: '#f8f8ff',
     };
 
     const leftGridStyle = {
-      // border: '1px solid red',
       textAlign: 'right',
       position: 'relative',
-      // background: 'rgba(255, 255, 255, 1)',
       zIndex: '1',
     };
 
     const leftArrowStyle = {
-      // border: '1px solid red',
       marginLeft: '-50',
       cursor: 'pointer',
       position: 'absolute',
@@ -123,7 +118,6 @@ class App extends React.Component {
     };
 
     const rightGridStyle = {
-      // border: '1px solid red',
       textAlign: 'left',
       position: 'relative',
       zIndex: '1',
@@ -133,7 +127,6 @@ class App extends React.Component {
       cursor: 'pointer',
       marginLeft: '-104',
       left: '50px',
-      // border: '1px solid red',
       position: 'absolute',
       height: '100%',
       width: '70px',
