@@ -5,72 +5,60 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Grid } from '@material-ui/core';
-import CompareModal from './CompareModal.jsx';
-
 import StarRating from './StarRating.jsx';
+import IconButton from '@material-ui/core/IconButton';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const axios = require('axios');
 
-class ProductCard extends React.Component {
+class OutfitCard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      productView: this.props.productView,
-      productViewInfo: null,
-      currentId: this.props.id,
+      // currentId: this.props.itemId,
       thumbnail: null,
       category: null,
       name: null,
       price: null,
       rating: null,
-      features: null,
       isLoaded: null,
     };
 
     this.url = 'http://52.26.193.201:3000';
-    this.handleCardClick = this.handleCardClick.bind(this);
   }
 
   componentDidMount() {
     this.updateProducts();
   }
 
-  getProductView() {
-    return axios.get(`${this.url}/products/${this.state.productView}`);
-  }
-
   getRating() {
-    return axios.get(`${this.url}/reviews/${this.state.currentId}/meta`);
+    return axios.get(`${this.url}/reviews/${this.props.itemId}/meta`);
   }
 
   getNameAndCategory() {
-    return axios.get(`${this.url}/products/${this.state.currentId}`);
+    return axios.get(`${this.url}/products/${this.props.itemId}`);
   }
 
   getThumbnailAndPrice() {
-    return axios.get(`${this.url}/products/${this.state.currentId}/styles`);
+    return axios.get(`${this.url}/products/${this.props.itemId}/styles`);
   }
 
   updateProducts() {
-    axios.all([this.getProductView(), this.getRating(), this.getNameAndCategory(), this.getThumbnailAndPrice()])
-      .then(axios.spread((productView, rating, nameAndCategory, thumbnailAndPrice) => {
+    axios.all([
+      this.getRating(),
+      this.getNameAndCategory(),
+      this.getThumbnailAndPrice()])
+      .then(axios.spread((rating, nameAndCategory, thumbnailAndPrice) => {
         this.setState({
-          productViewInfo: productView.data,
           rating: rating.data.ratings,
           name: nameAndCategory.data.name,
-          features: nameAndCategory.data.features,
           category: nameAndCategory.data.category,
           thumbnail: thumbnailAndPrice.data.results[0].photos[0].thumbnail_url,
           price: thumbnailAndPrice.data.results[0].original_price,
           isLoaded: true,
         });
       }));
-  }
-
-  handleCardClick(e) {
-    e.preventDefault();
-    this.props.handleClick(this.state.currentId);
   }
 
   render() {
@@ -115,7 +103,7 @@ class ProductCard extends React.Component {
     };
 
     return (
-      <Grid item id={this.state.currentId}>
+      <Grid item id={this.props.itemId}>
         {
           this.state.isLoaded
             ? (
@@ -127,29 +115,25 @@ class ProductCard extends React.Component {
                   title={this.state.name}
                 >
                   <CardContent style={buttonStyle}>
-                    <CompareModal
-                      comparedProductName={this.state.name}
-                      comparedProductCategory={this.state.category}
-                      currentProductInfo={this.state.productViewInfo}
-                      comparedProductFeatures={this.state.features}
-                    />
+                    <IconButton onClick={() => this.props.handleRemoveItem(this.props.itemId)}>
+                      <HighlightOffIcon fontSize="large" />
+                    </IconButton>
                   </CardContent>
                 </CardMedia>
-                <CardActionArea onClick={this.handleCardClick}>
 
-                  <CardContent style={contentStyle}>
-                    <Typography style={categoryStyle}>
-                      {this.state.category.toUpperCase()}
-                    </Typography>
-                    <Typography style={nameStyle}>
-                      {this.state.name}
-                    </Typography>
-                    <Typography style={priceStyle}>
-                      ${this.state.price}
-                    </Typography>
-                    <StarRating rating={this.state.rating} />
-                  </CardContent>
-                </CardActionArea>
+                <CardContent style={contentStyle}>
+                  <Typography style={categoryStyle}>
+                    {this.state.category.toUpperCase()}
+                  </Typography>
+                  <Typography style={nameStyle}>
+                    {this.state.name}
+                  </Typography>
+                  <Typography style={priceStyle}>
+                    ${this.state.price}
+                  </Typography>
+                  <StarRating rating={this.state.rating} />
+                </CardContent>
+
               </Card>
             )
             : (
@@ -167,4 +151,4 @@ class ProductCard extends React.Component {
   }
 }
 
-export default ProductCard;
+export default OutfitCard;
