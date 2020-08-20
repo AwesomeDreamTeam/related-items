@@ -152,7 +152,15 @@ class ProductCard extends React.Component {
                 </CardActionArea>
               </Card>
             )
-            : <p>Waiting for card data..</p>
+            : (
+              <Card style={cardStyle}>
+                <CardMedia
+                  style={mediaStyle}
+                  image="https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"
+                />
+                <CardContent style={contentStyle} />
+              </Card>
+            )
         }
       </Grid>
     );
