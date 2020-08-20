@@ -155,7 +155,7 @@ class App extends React.Component {
       marginTop: '10px',
       flexWrap: 'nowrap',
       overflow: 'scroll',
-      // boxShadow: '0 0 1px #FFF',
+      backgroundColor: '#262626',
     };
     const leftGridStyle = {
       textAlign: 'right',
@@ -239,13 +239,15 @@ class App extends React.Component {
                   // eslint-disable-next-line max-len
                   ? relatedProductIds.map((id, key) => <ProductCard id={id} key={key} productView={this.state.currentProduct} handleClick={this.handleClick} />)
                   : (
-                    <Card style={cardStyle}>
-                      <CardMedia
-                        style={mediaStyle}
-                        image="https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"
-                      />
-                      <CardContent style={contentStyle} />
-                    </Card>
+                    <Grid item>
+                      <Card style={cardStyle}>
+                        <CardMedia
+                          style={mediaStyle}
+                          image="https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"
+                        />
+                        <CardContent style={contentStyle} />
+                      </Card>
+                    </Grid>
                   )
               }
             </Grid>
