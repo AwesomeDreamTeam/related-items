@@ -7,7 +7,8 @@
 * Your Outfit List
 
 ## Demo
-fec-demo.gif
+![demo gif](https://github.com/AwesomeDreamTeam/related-items/blob/master/public/fec-demo.gif
+)
 
 ## Related Projects
 
