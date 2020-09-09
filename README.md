@@ -6,6 +6,9 @@
 * Related Products List
 * Your Outfit List
 
+## Demo
+fec-demo.gif
+
 ## Related Projects
 
   - https://github.com/AwesomeDreamTeam/Overview
