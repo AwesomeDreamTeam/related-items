@@ -1,4 +1,4 @@
-# Front-End Capstone | Related Items
+# ADT Apparel | Related Items
 
 > Related-Items is a module of the AwesomeDreamTeam Front-End Capstone project. This module covers:
 * Related Product Cards
